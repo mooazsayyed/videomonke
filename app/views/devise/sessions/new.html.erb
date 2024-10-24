@@ -1,0 +1,118 @@
+<h2 class="login-header">Log in</h2>
+
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="form-container">
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-input" %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="field remember-me">
+        <%= f.check_box :remember_me, class: "remember-me-checkbox" %>
+        <%= f.label :remember_me %>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Log in", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>
+
+<style>
+    .login-header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  /* Container for the form */
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Form labels styling */
+  .field label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* Input fields styling */
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box;
+  }
+
+  /* Focused input field styling */
+  .form-input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  /* Remember me checkbox and label styling */
+  .remember-me {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .remember-me-checkbox {
+    margin-right: 10px;
+  }
+
+  /* Submit button styling */
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  /* Button hover effect */
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  /* Additional links below the form */
+  .devise-links {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .devise-links a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .devise-links a:hover {
+    text-decoration: underline;
+  }
+</style>

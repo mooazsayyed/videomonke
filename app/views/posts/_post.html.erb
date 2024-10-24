@@ -1,0 +1,75 @@
+<div id="<%= dom_id post %>" class="post-container">
+  <div class="post-content">
+    <p class="post-title">
+      <strong>Title:</strong>
+      <%= post.title %>
+    </p>
+
+    <p class="post-description">
+      <strong>Description:</strong>
+      <%= post.description %>
+    </p>
+  </div>
+
+  <div class="media-container">
+    <p class="post-image">
+      <strong>Image:</strong>
+      <% if post.image.attached? %>
+        <%= image_tag(post.image, class: "thumbnail") %>
+      <% else %>
+        <em>No image available</em>
+      <% end %>
+    </p>
+
+    <% if post.video.attached? %>
+      <video class="video-thumbnail" controls>
+        <source src="<%= url_for(post.video) %>" type="video/mp4">
+      </video>
+    <% else %>
+      <em>No video available</em>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  /* Container for each post */
+  .post-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Title and description styling */
+  .post-title,
+  .post-description {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+
+  /* Media container for image and video side by side */
+  .media-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+  }
+
+  /* Thumbnail styling for image and video */
+  .thumbnail, .video-thumbnail {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  /* Video styling */
+  .video-thumbnail {
+    height: 150px;
+    width: auto;
+    max-width: 100%;
+  }
+</style>

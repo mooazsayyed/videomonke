@@ -1,0 +1,81 @@
+<h1>Your Media</h1>
+
+<div class="posts-grid">
+    <% @posts.each do |post| %>
+        <div class="post">
+            <div class="media-container">
+                <% if post.video.attached? %>
+                    <%= video_tag url_for(post.video), controls: true, class: 'media-item' %>
+                <% elsif post.image.attached? %>
+                    <%= image_tag url_for(post.image), class: 'media-item' %>
+                <% end %>
+            </div>
+            <div class="post-details">
+                <h3 class="post-title"><%= post.title %></h3>
+                <p class="post-description"><%= post.description %></p>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<style>
+    h1 {
+        text-align: center;
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .post {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        max-width: 400px; /* Adjust this value to reduce the width */
+    }
+
+    .post:hover {
+        transform: translateY(-5px);
+    }
+
+    .media-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
+    }
+
+    .media-item {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .post-details {
+        padding: 15px;
+    }
+
+    .post-title {
+        font-size: 1.25rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .post-description {
+        font-size: 1rem;
+        color: #666;
+    }
+</style>
