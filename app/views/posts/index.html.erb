@@ -1,43 +1,46 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="button-container">
-  <%= link_to "New post", new_post_path, class: "btn btn-primary" %>
+<div class="header-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+  <h1>All Posts</h1>
+  <%= link_to "New post", new_post_path, class: "btn btn-primary", style: "position: absolute; right: 20px;" %>
 </div>
-
-<h1>All Posts</h1>
 
 <div id="posts">
   <% @posts.each do |post| %>
     <div class="post-container">
       <% if post.image.attached? %>
         <div class="thumbnail-container">
-  <%= link_to post_path(post) do %>
-    <% if post.image.attached? %>
-      <%= image_tag url_for(post.image), class: 'thumbnail' %>
-    <% end %>
-    <% if post.video.attached? %>
-      <%= video_tag url_for(post.video), controls: false, class: 'video-thumbnail' %>
-    <% end %>
-    <div class="play-button">&#9658;</div>
-  <% end %>
-</div>
-
+          <%= link_to post_path(post) do %>
+            <%= image_tag url_for(post.image), class: 'thumbnail' %>
+            <% if post.video.attached? %>
+              <%= video_tag url_for(post.video), muted: true, controls: false, class: 'video-thumbnail' %>
+            <% end %>
+            <div class="play-button">&#9658;</div>
+          <% end %>
+        </div>
       <% else %>
-        <% if post.video.attached? %>
-          <div class="media-container">
-            <%= video_tag url_for(post.video), controls: true, class: 'media-item' %>
-          </div>
-        <% end %>
+        <p>No image available</p>
       <% end %>
 
-    
-      
+      <% if post.video.attached? && !post.image.attached? %>
+        <div class="media-container">
+          <%= video_tag url_for(post.video), autoplay: true, muted: true, class: 'media-item' %>
+        </div>
+      <% elsif !post.video.attached? && !post.image.attached? %>
+        <p>No video available</p>
+      <% end %>
+
+      <% if post.title.present? %>
+        <h3><%= post.title %></h3>
+      <% end %>
+
       <div class="post-buttons">
         <%= link_to "Show this post", post, class: "btn btn-secondary" %>
       </div>
     </div>
   <% end %>
 </div>
+
 
 <style>
   /* Styling for the posts grid */
@@ -57,16 +60,27 @@
   }
 
   .thumbnail-container {
-  position: relative;
-  cursor: pointer;
-}
+    position: relative;
+    cursor: pointer;
+  }
 
-.thumbnail {
-  width: 100%; /* Ensure the image takes the full width of its container */
-  height: 200px; /* Set a fixed height for all thumbnails */
-  object-fit: cover; /* Ensure the image covers the container while maintaining aspect ratio */
-  border-radius: 8px;
-}
+  .thumbnail {
+    width: 100%; /* Ensure the image takes the full width of its container */
+    height: 200px; /* Set a fixed height for all thumbnails */
+    object-fit: cover; /* Ensure the image covers the container while maintaining aspect ratio */
+    border-radius: 8px;
+  }
+
+  .video-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    visibility: hidden;
+  }
 
   .play-button {
     position: absolute;
@@ -78,6 +92,7 @@
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     padding: 10px;
+    visibility: visible;
   }
 
   .media-container {
@@ -133,3 +148,31 @@
     margin-bottom: 20px;
   }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.thumbnail-container').forEach(function(container) {
+    const video = container.querySelector('video');
+    const playButton = container.querySelector('.play-button');
+
+    if (video) {
+      container.addEventListener('mouseenter', function() {
+        video.style.visibility = 'visible'; // Show the video
+        playButton.style.visibility = 'hidden'; // Hide the play button
+
+        // Ensure the video plays
+        video.play().catch(function(error) {
+          console.error('Error playing video:', error);
+        });
+      });
+
+      container.addEventListener('mouseleave', function() {
+        video.pause(); // Pause the video
+        video.currentTime = 0; // Reset video to the beginning
+        video.style.visibility = 'hidden'; // Hide the video
+        playButton.style.visibility = 'visible'; // Show the play button again
+      });
+    }
+  });
+});
+
+</script>

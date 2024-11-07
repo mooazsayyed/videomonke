@@ -1,20 +1,27 @@
 <h1>Your Media</h1>
 
 <div class="posts-grid">
-    <% @posts.each do |post| %>
-        <div class="post">
-            <div class="media-container">
-                <% if post.video.attached? %>
-                    <%= video_tag url_for(post.video), controls: true, class: 'media-item' %>
-                <% elsif post.image.attached? %>
-                    <%= image_tag url_for(post.image), class: 'media-item' %>
-                <% end %>
+    <% if @posts.any? %>
+        <% @posts.each do |post| %>
+            <div class="post">
+                <div class="media-container">
+                    <% if post.video.attached? %>
+                        <%= video_tag url_for(post.video), controls: true, class: 'media-item' %>
+                    <% elsif post.image.attached? %>
+                        <%= image_tag url_for(post.image), class: 'media-item' %>
+                    <% end %>
+                </div>
+                <div class="post-details">
+                    <h3 class="post-title"><%= post.title %></h3>
+                    <p class="post-description"><%= post.description %></p>
+                </div>
             </div>
-            <div class="post-details">
-                <h3 class="post-title"><%= post.title %></h3>
-                <p class="post-description"><%= post.description %></p>
-            </div>
-        </div>
+        <% end %>
+    <% else %>
+        <p class="no-media-message">No media available.</p>
+        <h3 class="upload-link">
+          <%= link_to "Upload to get started", new_post_path %>
+        </h3>
     <% end %>
 </div>
 
