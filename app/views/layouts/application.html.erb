@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Youtube</title>
+    <title>Video Monke</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/assets/favicon_videomoke.png" type="image/x-icon">
   </head>
 
   <body>
+    <%= render 'layouts/navbar' %> 
+    <p class="alert alert-notice"><%= notice %></p>
+    <p class="alert alert-alert"><%= alert %></p>
     <%= yield %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>
