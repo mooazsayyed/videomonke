@@ -1,36 +1,97 @@
-<%= form_with(model: post) do |form| %>
-  <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+<div class="form-wrapper">
+  <%= form_with(model: post, html: { class: 'styled-form' }) do |form| %>
+    <% if post.errors.any? %>
+      <div class="error-messages">
+        <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+        <ul>
+          <% post.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="form-group">
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :image, class: "form-label" %>
+      <%= form.file_field :image, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :video, class: "form-label" %>
+      <%= form.file_field :video, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_field :description, class: "form-input" %>
+    </div>
+
+    <div class="form-group submit-group">
+      <%= form.submit "Submit", class: "form-submit" %>
     </div>
   <% end %>
+</div>
+<style>
+/* Styling for the form wrapper */
+    .form-wrapper {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-  <div style="margin-bottom: 15px;">
-    <%= form.label :image, style: "display: block; font-weight: bold;" %>
-    <%= form.file_field :image, style: "width: 100%;" %>
-  </div>
+.styled-form .form-group {
+  margin-bottom: 15px;
+}
 
-  <div style="margin-bottom: 15px;">
-    <%= form.label :video, style: "display: block; font-weight: bold;" %>
-    <%= form.file_field :video, style: "width: 100%;" %>
-  </div>
+.styled-form .form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
-  </div>
+.styled-form .form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+.styled-form .form-submit {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #d93025; /* YouTube red */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.styled-form .form-submit:hover {
+  background-color: #b92d20;
+}
+
+.error-messages {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.error-messages h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+  </style>>

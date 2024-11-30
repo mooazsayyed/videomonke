@@ -1,9 +1,36 @@
-<h1>New post</h1>
+<h1 class="new-post-title">New post</h1>
 
 <%= render "form", post: @post %>
 
 <br>
 
-<div>
+<div class="back-link">
   <%= link_to "Back to posts", posts_path %>
 </div>
+
+<style>
+/* Styling for the New Post heading */
+.new-post-title {
+  color: #d93025; /* YouTube-like red */
+  font-size: 3em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styling for the "Back to posts" link */
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+</style>

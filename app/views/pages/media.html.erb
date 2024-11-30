@@ -13,8 +13,22 @@
                 </div>
                 <div class="post-details">
                     <h3 class="post-title"><%= post.title %></h3>
-                    <p class="post-description"><%= post.description %></p>
+                    
+                    <!-- Post description with expand/collapse functionality -->
+                    <p class="post-description" id="description_<%= post.id %>">
+                        <%= post.description %>
+                    </p>
+                    <button class="expand-description-btn" onclick="toggleDescription('<%= post.id %>')">Show more</button>
                 </div>
+
+                <!-- Post controls -->
+                <% if current_user == post.user %> <!-- Only show controls for the post's owner -->
+                    <div class="post-controls">
+                        <%= link_to "Edit this post", edit_post_path(post), class: "btn btn-secondary" %> 
+                        <%= link_to "Back to posts", posts_path, class: "btn btn-secondary" %> 
+                        <%= button_to "Destroy this post", post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+                    </div>
+                <% end %>
             </div>
         <% end %>
     <% else %>
@@ -84,5 +98,71 @@
     .post-description {
         font-size: 1rem;
         color: #666;
+        max-height: 50px; /* Show only one line */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: max-height 0.3s ease; /* Smooth transition */
+    }
+
+    /* Button for expanding the description */
+    .expand-description-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        font-size: 0.9em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .expand-description-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Styling for post controls */
+    .post-controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .post-controls .btn {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .post-controls .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .post-controls .btn-danger {
+        background-color: #dc3545;
+    }
+
+    .post-controls .btn-danger:hover {
+        background-color: #c82333;
     }
 </style>
+
+<script>
+    // JavaScript function to toggle the description visibility
+    function toggleDescription(postId) {
+        var description = document.getElementById('description_' + postId);
+        var button = document.querySelector('#description_' + postId + ' + .expand-description-btn');
+
+        if (description.style.maxHeight === 'none') {
+            description.style.maxHeight = '50px';  // Show only one line
+            button.innerHTML = "Show more";        // Change button text
+        } else {
+            description.style.maxHeight = 'none';  // Expand to show full description
+            button.innerHTML = "Show less";        // Change button text
+        }
+    }
+</script>

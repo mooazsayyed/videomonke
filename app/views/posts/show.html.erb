@@ -1,18 +1,166 @@
 <p style="color: green"><%= notice %></p>
+<div class="video-container">
+  <%= video_tag url_for(@post.video), controls: true if @post.video.attached? %>
+</div>
+<h2><%= @post.title %></h2>
+<p id="post-description" class="description-toggle">
+  <%= @post.description %>
+</p>
+<button id="toggle-description" class="btn">Show more</button>
 
-<%= render @post %>
-
-<div>
+<div class="post-actions">
   <% if current_user == @post.user %> 
-    <%= link_to "Edit this post", edit_post_path(@post) %> |
-    <%= link_to "Back to posts", posts_path %>
-    <%= button_to "Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" } %>
+    <%= link_to "Edit this post", edit_post_path(@post), class: "btn btn-secondary" %> 
+    <%= link_to "Back to posts", posts_path, class: "btn btn-secondary" %> 
+    <%= button_to "Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
   <% else %>
-    <!-- Show download link for the video -->
-    <% if @post.video.attached? %>
-      <%= link_to "Download Video", rails_blob_path(@post.video, disposition: "attachment"), class: "btn btn-primary" %>
-    <% else %>
-      <p>No video available for download.</p>
-    <% end %>
+    <div class="download-section" style="text-align: center;">
+      <% if @post.video.attached? %>
+        <%= link_to "Download Video", rails_blob_path(@post.video, disposition: "attachment"), class: "btn btn-primary" %>
+      <% else %>
+        <p>No video available for download.</p>
+      <% end %>
+    </div>
   <% end %>
 </div>
+
+
+
+
+
+
+
+<style>
+/* Centering and styling the video container */
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  width: 80%; /* Adjust as needed for responsiveness */
+  max-width: 1200px; /* Maximum width for large screens */
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Styling for the video element */
+.video-container video {
+  width: 100%; /* Make the video take the full width of the container */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px;
+}
+
+/* Styling for titles and descriptions */
+h2 {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 1.8em;
+  color: #333;
+}
+
+p {
+  text-align: center;
+  font-size: 1.1em;
+  color: #555;
+}
+
+/* Button and link styling */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+
+/* /css for button video controls */
+/* Center the action links below the video */
+.post-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.post-actions .btn {
+  margin: 5px;
+  padding: 10px 20px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.download-section {
+  margin-top: 20px;
+}
+
+/* Truncate the description to the first line */
+.description-toggle {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Show only the first line */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.1em;
+  color: #555;
+}
+
+#toggle-description {
+  display: block;
+  margin: 20px auto;
+  font-size: 1em;
+  color: #007bff;
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const description = document.getElementById('post-description');
+  const toggleButton = document.getElementById('toggle-description');
+
+  // Check if the description is expanded before
+  const isExpanded = localStorage.getItem('descriptionExpanded') === 'true';
+
+  // Set initial state based on stored preference
+  if (isExpanded) {
+    description.style.webkitLineClamp = 'unset'; // Expand description
+    toggleButton.textContent = 'Show less'; // Change button text
+  } else {
+    description.style.webkitLineClamp = '1'; // Collapse description
+    toggleButton.textContent = 'Show more'; // Change button text
+  }
+
+  // Toggle button functionality
+  toggleButton.addEventListener('click', function() {
+    const isCurrentlyExpanded = description.style.webkitLineClamp === 'unset';
+    if (isCurrentlyExpanded) {
+      description.style.webkitLineClamp = '1'; // Collapse description
+      toggleButton.textContent = 'Show more'; // Change button text
+      localStorage.setItem('descriptionExpanded', 'false'); // Save state
+    } else {
+      description.style.webkitLineClamp = 'unset'; // Expand description
+      toggleButton.textContent = 'Show less'; // Change button text
+      localStorage.setItem('descriptionExpanded', 'true'); // Save state
+    }
+  });
+});
+
+</script>
